@@ -20,6 +20,7 @@ public class Application {
 		ApplicationContext ctx = SpringApplication.run(Application.class, args);
 
 		System.out.println("Let's inspect the beans provided by Spring Boot:");
+		System.out.println("0604");
 
 		String[] beanNames = ctx.getBeanDefinitionNames();
 		Arrays.sort(beanNames);
