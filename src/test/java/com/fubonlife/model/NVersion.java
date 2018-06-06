@@ -3,7 +3,7 @@ package com.fubonlife.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fubonlife.model.Version.Threshold;
 
-public class VersionN {
+public class NVersion {
 	@JsonProperty("result")
 	String result;
 	@JsonProperty("version")

@@ -2,13 +2,15 @@ package com.fubonlife.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ListN {
+public class NBatchAdd {
 	@JsonProperty("result")
 	String result;
 	@JsonProperty("error")
 	String error;
-	@JsonProperty("groups")
-	String[] groups;
+	@JsonProperty("fail_index")
+	Integer[] fail_index;
+	@JsonProperty("fail_reason")
+	Integer[] fail_reason;
 	
 	
 	public String getResult() {
@@ -27,11 +29,17 @@ public class ListN {
 	}
 	
 	
-	public String[] getGroups() {
-		return groups;
+	public Integer[] getFail_index() {
+		return fail_index;
 	}
-	public void setGroups(String[] groups) {
-		this.groups = groups;
+	public void setFail_index(Integer[] fail_index) {
+		this.fail_index = fail_index;
+	}
+	public Integer[] getFail_reason() {
+		return fail_reason;
+	}
+	public void setFail_reason(Integer[] fail_reason) {
+		this.fail_reason = fail_reason;
 	}
 	
 	

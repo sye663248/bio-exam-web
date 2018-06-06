@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
-import com.fubonlife.model.ListN;
-import com.fubonlife.model.VersionN;
+import com.fubonlife.model.NList;
+import com.fubonlife.model.NVersion;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class Face1toNList {
@@ -21,16 +21,19 @@ public class Face1toNList {
 		
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "http://223.22.252.52:803/group/list";
-		ResponseEntity<ListN> response = restTemplate.getForEntity(url, ListN.class);
+		ResponseEntity<NList> response = restTemplate.getForEntity(url, NList.class);
 		
-		ListN o = response.getBody();
+		NList o = response.getBody();
 		
 		
 		
 		log.info("============================================");
-        for(int i =0 ;i < o.getGroups().length ;i++) {
-        	log.info("groups: "+o.getGroups()[i]);
-        }
+//        for(int i =0 ;i < o.getGroups().length ;i++) {
+//        	log.info("groups: "+o.getGroups()[i]);
+//        }
+        for(String groups : o.getGroups()){ 
+        	log.info("groups: "+groups);
+        }              
 		log.info("result: "+o.getResult());
 		log.info("error: "+o.getError());
 		log.info("============================================");

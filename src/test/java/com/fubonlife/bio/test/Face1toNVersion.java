@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
 import com.fubonlife.model.Version;
-import com.fubonlife.model.VersionN;
+import com.fubonlife.model.NVersion;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class Face1toNVersion {
@@ -21,9 +21,9 @@ public class Face1toNVersion {
 		
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "http://223.22.252.52:803/version";
-		ResponseEntity<VersionN> response = restTemplate.getForEntity(url, VersionN.class);
+		ResponseEntity<NVersion> response = restTemplate.getForEntity(url, NVersion.class);
 		
-		VersionN o = response.getBody();
+		NVersion o = response.getBody();
 		
 		log.info("============================================");
 		log.info("version: "+o.getVersion());
