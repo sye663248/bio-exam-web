@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.fubonlife.bio.test.Face1to1Version
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 31.701 s - in com.fubonlife.bio.test.Face1to1Version

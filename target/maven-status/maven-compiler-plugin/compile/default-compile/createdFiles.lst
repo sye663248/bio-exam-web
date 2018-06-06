@@ -1,0 +1,16 @@
+com\fubonlife\bio\mg\util\WebRestResponse.class
+com\fubonlife\bio\mg\controller\GroupBatchAddController.class
+com\fubonlife\bio\mg\controller\GroupSearchController.class
+com\fubonlife\bio\mg\controller\GroupAddController.class
+com\fubonlife\bio\mg\controller\GroupCleanController.class
+com\fubonlife\bio\mg\service\TestService.class
+com\fubonlife\bio\mg\service\TestServiceImpl.class
+com\fubonlife\bio\mg\controller\GroupListController.class
+com\fubonlife\bio\mg\entity\mongo\Test.class
+com\fubonlife\bio\mg\controller\GroupFreeController.class
+com\fubonlife\bio\mg\controller\GroupVersionController.class
+com\fubonlife\bio\mg\app\Application.class
+com\fubonlife\bio\mg\controller\GroupDeleteController.class
+com\fubonlife\bio\mg\controller\GroupGetSizeController.class
+com\fubonlife\bio\mg\controller\TestController.class
+com\fubonlife\bio\mg\controller\GroupInitController.class

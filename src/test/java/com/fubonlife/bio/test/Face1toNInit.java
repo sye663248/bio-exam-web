@@ -22,7 +22,7 @@ public class Face1toNInit {
 	@Test
 	public void test01() throws Exception {
 		
-		String gname ="1NFaceDatabase";
+		String gname = System.getProperty("gname");
 		HttpHeaders httpHeaders= new HttpHeaders();
 		
 		
