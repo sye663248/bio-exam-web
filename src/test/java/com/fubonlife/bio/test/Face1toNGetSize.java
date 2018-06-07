@@ -12,7 +12,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import com.fubonlife.model.NBatchAdd;
 import com.fubonlife.model.NGetSize;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,14 +21,14 @@ public class Face1toNGetSize {
 	
 	@Test
 	public void test01() throws Exception {
-		String gname = "1NFaceDatabase";
+
 		
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "http://223.22.252.52:803/group/getsize";
 		HttpHeaders headers = new HttpHeaders();
 		
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		map.add("groupname", gname);
+		map.add("groupname", System.getProperty("gname"));
 
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(map, headers);
 
@@ -44,6 +43,7 @@ public class Face1toNGetSize {
 		
 		
 		log.info("============================================");
+		log.info("輸入參數:groupname="+System.getProperty("gname"));
         log.info("size: "+o.getSize());            
 		log.info("result: "+o.getResult());
 		log.info("error: "+o.getError());

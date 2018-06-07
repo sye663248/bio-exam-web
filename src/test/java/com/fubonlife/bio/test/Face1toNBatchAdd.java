@@ -17,8 +17,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.fubonlife.model.NBatchAdd;
-import com.fubonlife.model.NList;
-import com.fubonlife.model.NVersion;
 import com.google.gson.Gson;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,7 +28,7 @@ public class Face1toNBatchAdd {
 	@Test
 	public void test01() throws Exception {
 		
-		String gname ="1NFaceDatabase";
+	
 		
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "http://223.22.252.52:803/group/batchadd";
@@ -39,13 +37,13 @@ public class Face1toNBatchAdd {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-		File f1 = new File("D:\\features.txt");
+		File f1 = new File(System.getProperty("features"));
 
-		FileSystemResource fileSystemResource = new FileSystemResource(f1);
+		FileSystemResource features = new FileSystemResource(f1);
 
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
-		map.add("groupname", gname);
-		map.add("features", fileSystemResource);
+		map.add("groupname", System.getProperty("gname"));
+		map.add("features", features);
 
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(map, headers);
 
@@ -59,6 +57,8 @@ public class Face1toNBatchAdd {
 		
 		
 		log.info("============================================");
+		log.info("輸入參數:groupname="+System.getProperty("gname"));
+		log.info("輸入參數:features="+features);
 		if(o.getFail_index() != null ) {
         for(Integer fail_index : o.getFail_index()){ 
         	log.info("fail_index: "+fail_index);

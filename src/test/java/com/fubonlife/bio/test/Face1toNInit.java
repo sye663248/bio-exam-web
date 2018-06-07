@@ -21,13 +21,13 @@ public class Face1toNInit {
 	
 	@Test
 	public void test01() throws Exception {
+
 		
-		String gname = System.getProperty("gname");
 		HttpHeaders httpHeaders= new HttpHeaders();
 		
 		
 		MultiValueMap<String,Object> map = new LinkedMultiValueMap<String,Object>();
-		map.add("groupname", gname);
+		map.add("groupname", System.getProperty("gname"));
 		
 		HttpEntity<MultiValueMap<String,Object>> requestEntity  = new HttpEntity<>(map,httpHeaders);
 		
@@ -39,6 +39,7 @@ public class Face1toNInit {
 		NInit o = response.getBody();
 		
 		log.info("============================================");
+		log.info("輸入參數:groupname="+System.getProperty("gname"));
 		log.info("result: "+o.getResult());
 		log.info("error: "+o.getError());
 		log.info("============================================");

@@ -12,7 +12,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import com.fubonlife.model.NAdd;
 import com.fubonlife.model.NFree;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -23,12 +22,12 @@ public class Face1toNFree {
 	@Test
 	public void test01() throws Exception {
 		
-		String gname ="1NFaceDatabase";
+
 		HttpHeaders httpHeaders= new HttpHeaders();
 		
 		
 		MultiValueMap<String,Object> map = new LinkedMultiValueMap<String,Object>();
-		map.add("groupname", gname);
+		map.add("groupname", System.getProperty("gname"));
 		
 		HttpEntity<MultiValueMap<String,Object>> requestEntity  = new HttpEntity<>(map,httpHeaders);
 		
@@ -40,6 +39,7 @@ public class Face1toNFree {
 		NFree o = response.getBody();
 		
 		log.info("============================================");
+		log.info("輸入參數:groupname="+System.getProperty("gname"));
 		log.info("result: "+o.getResult());
 		log.info("error: "+o.getError());
 		log.info("============================================");

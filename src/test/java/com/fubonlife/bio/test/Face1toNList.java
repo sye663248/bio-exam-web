@@ -9,7 +9,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
 import com.fubonlife.model.NList;
-import com.fubonlife.model.NVersion;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class Face1toNList {

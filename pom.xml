@@ -134,7 +134,12 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 				<systemPropertyVariables>
-				<gname>1NFaceDatabase1</gname>
+				<gname>1NFaceDatabase5</gname>
+				<featureid>1</featureid>
+				<feature>D:\\feature.txt</feature>
+				<limit>2</limit>
+				<tag>Hello this facetag</tag>
+				<features>D:\\features.txt</features>
 				</systemPropertyVariables>
 				</configuration>
 			</plugin>

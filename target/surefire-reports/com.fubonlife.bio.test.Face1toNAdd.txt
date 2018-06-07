@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
-Test set: com.fubonlife.bio.test.Face1toNInit
+Test set: com.fubonlife.bio.test.Face1toNAdd
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.022 s - in com.fubonlife.bio.test.Face1toNInit
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.849 s - in com.fubonlife.bio.test.Face1toNAdd
