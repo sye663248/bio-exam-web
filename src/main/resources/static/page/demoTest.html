@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+img {
+	width: 100px;
+	height: 100px;
+}
+</style>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="/js/json2.js"></script>
+<script src="/js/demoTest.js"></script>
+<script src="/js/test.js"></script>
+
+</head>	
+   		
+   		
+    	
+<body onload="load();" style="background-color: #fff">
+
+	<button onclick="init()">init</button>
+	<button onclick="start()">start</button>
+	<button onclick="stop()">stop</button>
+	<button onclick="getVersion()">getVersion</button>
+	<button onclick="getVideoDevices()">getVideoDevices</button>
+	<br>
+	<input type="file" name="file" id="file" accept="image/*"
+		onChange="getFile()" />
+	<button
+		onclick="javascript:if(action!=0){alert('請先傳照');return;}action=1;start();">verify</button>
+	<br>
+	<button onclick="javascript:action=2;start();">detect</button>
+	<button onclick="javascript:action=3;start();">extract</button>
+	<br>
+	<button id="capture" onclick="capture()">capture</button>
+	<button
+		onclick="javascript:if(action!=0){alert('請先拍照');return;}action=4;start();">compare</button>
+	<br>
+	<button onclick="javascript:action=5;start();">extract_with_detect</button>
+	<button onclick="version()">version</button>
+	<br>
+	<div style="text-align: center;">
+		<div id="deviceSetting">
+			<select id="devices">
+			</select>
+		</div>
+
+		<!-- for IE -->
+        <object type="application/x-plugintest" 
+                id="plugin"
+                classid="clsid:f3c1bb15-7b99-52b4-82eb-be129d67bd5b" 
+                style="width:480px;height:460px;border:1px solid #ccc;">
+        </object>
+
+
+
+
+
+		<!-- for Firefox/chrome 
+		<object type="application/x-plugintest" id="plugin"
+			style="width: 600px; height: 600px; border: 1px solid #ccc;">
+		</object>
+-->
+		<canvas id="canvas1"></canvas>
+
+		<br>
+
+	</div>
+	<div id="attr"></div>
+</body>
+</html>
