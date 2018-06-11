@@ -1,44 +1,74 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8">
 <style>
 img {
 	width: 100px;
 	height: 100px;
 }
+
+div {
+	float: left;
+}
+canvas {
+	float: left;
+}
 </style>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/json2.js"></script>
 <script src="/js/demoTest.js"></script>
 <script src="/js/test.js"></script>
 
-</head>	
-   		
-   		
-    	
+</head>
+
+
+
 <body onload="load();" style="background-color: #fff">
 
-	<button onclick="init()">init</button>
-	<button onclick="start()">start</button>
-	<button onclick="stop()">stop</button>
-	<button onclick="getVersion()">getVersion</button>
-	<button onclick="getVideoDevices()">getVideoDevices</button>
-	<br>
-	<input type="file" name="file" id="file" accept="image/*"
-		onChange="getFile()" />
-	<button
-		onclick="javascript:if(action!=0){alert('�Х��Ƿ�');return;}action=1;start();">verify</button>
-	<br>
-	<button onclick="javascript:action=2;start();">detect</button>
-	<button onclick="javascript:action=3;start();">extract</button>
-	<br>
-	<button id="capture" onclick="capture()">capture</button>
-	<button
-		onclick="javascript:if(action!=0){alert('�Х����');return;}action=4;start();">compare</button>
-	<br>
-	<button onclick="javascript:action=5;start();">extract_with_detect</button>
-	<button onclick="version()">version</button>
-	<br>
+	<div>
+		<button onclick="init()">初始化</button>
+		<button onclick="start()">開始人臉辨識</button>
+		<button onclick="stop()">停止人臉辨識</button><br>
+		<button onclick="getVersion()">SDK版本</button>
+		<button onclick="getVideoDevices()">取得裝置資訊</button>
+		<br>
+		<h3>1比1 API</h3>
+		<input type="file" name="file" id="file" accept="image/*"
+			onChange="getFile()" />
+		<button
+			onclick="javascript:if(action!=0){alert('請先傳照');return;}action=1;start();">1.1
+			verify</button>
+		<br>
+		<button onclick="javascript:action=2;start();">1.2 detect</button>
+		<button onclick="javascript:action=3;start();">1.3 extract</button>
+		<br>
+		<button id="capture" onclick="capture()">capture</button>
+		<button
+			onclick="javascript:if(action!=0){alert('請先拍照');return;}action=4;start();">1.4
+			compare</button>
+		<br>
+		<button onclick="javascript:action=5;start();">1.5
+			extract_with_detect</button>
+		<button onclick="version()">1.6 version</button>
+		<br>
+		<h3>1比N API</h3>
+		<input type="button"
+			onclick="javascript:location.href='/index_1N.html'" value="1比N"></input>
+		<h3>應用</h3>
+		<button onclick="javascript:location.href='/groupinit.html'">1:N 1.1 init faceGroup </button><br>
+		<button onclick="javascript:location.href='/groupfree.html'">1:N 1.2 free faceGroup </button><br>
+		<button onclick="javascript:action=7;start();">1:1-1.5 get feature to 1:N-1.3 add member </button><br>
+		<button onclick="javascript:location.href='/groupdelete.html'">1:N 1.4 delete member by feature ID</button><br>
+		<button onclick="javascript:location.href='/groupclean.html'">1:N 1.5 delete all member </button><br>
+		<button onclick="javascript:action=6;start();">1:1-1.5 get feature to 1:N-1.6 check score (Login) </button><br>
+		<button onclick="javascript:location.href='/groupgetsize.html'">1:N 1.7 get faceGroup size </button><br>
+		<button onclick="javascript:location.href='/groupbatchadd.html'">1:N 1.8 add batch </button><br>
+		<button onclick="javascript:location.href='/grouplist.html'">1:N 1.9 get faceGroup list(set) </button><br>
+		<button onclick="javascript:location.href='/groupversion.html'">1:N 1.10 get version </button><br>
+		
+
+	</div>
 	<div style="text-align: center;">
 		<div id="deviceSetting">
 			<select id="devices">
@@ -46,26 +76,20 @@ img {
 		</div>
 
 		<!-- for IE -->
-        <object type="application/x-plugintest" 
-                id="plugin"
-                classid="clsid:f3c1bb15-7b99-52b4-82eb-be129d67bd5b" 
-                style="width:480px;height:460px;border:1px solid #ccc;">
-        </object>
-
-
-
-
+		<object type="application/x-plugintest" id="plugin"
+			classid="clsid:f3c1bb15-7b99-52b4-82eb-be129d67bd5b"
+			style="width: 480px; height: 460px; border: 1px solid #ccc;">
+		</object>
 
 		<!-- for Firefox/chrome 
 		<object type="application/x-plugintest" id="plugin"
 			style="width: 600px; height: 600px; border: 1px solid #ccc;">
 		</object>
 -->
-		<canvas id="canvas1"></canvas>
-
-		<br>
-
+		
 	</div>
+	<canvas id="canvas1"></canvas>
+	<br>
 	<div id="attr"></div>
 </body>
 </html>

@@ -7,15 +7,36 @@ function login(canvas){
 
     $.post("/face1to1/login",info,function(data){
         console.log(data);
-        if(JSON.stringify(data.confidence)>=90){
+        var score = 0;
+        if(JSON.stringify(data.scores)!="null") {
+        	score= JSON.stringify(data.scores[0]);
+        }
+        console.log("score " + score);
+        if(score>79.9){
         	alert("登入成功");
         	window.location.href("/face1to1/demoTest");
 //        	window.location.href("/index_1N.html");
         } else {
         	alert("登入失敗");
+        	$("#attr").val("");
+        	window.location.href("/face1to1");
         }
     },"json") 
 }
+
+//groupAdd
+function groupAdd(canvas, groupname){
+	var info = {
+            imgString: (typeof canvas == "string")?canvas:canvas.toDataURL("image/png"),
+            groupname: groupname
+        }
+
+    $.post("/face1to1/groupAdd",info,function(data){
+        console.log(data);
+        alert("groupAdd: "+data);
+    },"json") 
+}
+
 
 //1.1
 function verify(canvas, canvas2){
@@ -114,6 +135,7 @@ function extract_with_detect(canvas) {
 	}, "json");
 }
 
+//1.6
 function version(){
 	$.post("/face1to1/version", function(data){
 		 $("#attr").text(JSON.stringify(data));

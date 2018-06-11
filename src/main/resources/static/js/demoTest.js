@@ -189,9 +189,14 @@ var action = -1;
             		console.log(base64);
             		draw(base64);
             	} else if(action==6){
+            		//login
             		$("#attr").text("驗證中，請稍等。");
-            		console.log("login");
 					login(base64);
+//					
+            	} else if(action==7){
+            		$("#attr").text("");
+            		groupAdd(base64, "group1");
+//            		$("groupName")
             	}
             }
         });
