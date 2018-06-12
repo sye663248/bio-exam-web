@@ -18,13 +18,13 @@ public class Face1Controller {
 	@RequestMapping("/demoTest")
 	public String demoTest(Model model, HttpSession session) {
 		boolean isLogin = (boolean)((session.getAttribute("isLogin")==null)?false:session.getAttribute("isLogin")); 
-//		if(!isLogin) {
-//			System.out.println("沒登入");
-//			return "faceLogin";
-//		}else{
-//			System.out.println("有登入");
+		if(!isLogin) {
+			System.out.println("沒登入");
+			return "faceLogin";
+		}else{
+			System.out.println("有登入");
 			return "demoTest";
-//		}
+		}
 		
 	}
 	

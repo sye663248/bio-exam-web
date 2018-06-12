@@ -56,7 +56,7 @@ public class Face1to1ServiceImpl implements Face1to1Service {
 		String feature = val.substring(val.indexOf("Feature")+10,val.length()-5);
 		GroupSearchController groupSearchController = new GroupSearchController();
 //		group1 YSY ...
-		String result = groupSearchController.groupsearch("group1",feature).getData().toString();
+		String result = groupSearchController.groupsearch("test",feature).getData().toString();
 		System.out.println("result " + result );
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> map = new HashMap<String, Object>();

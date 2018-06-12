@@ -40,7 +40,7 @@ var action = -1;
             //cropVideo: true,
             //aimlessTimeout: 56,
             //hideProgress: true,
-            //hasSubTip: true,
+            hasSubTip: true,
             //textAlign: "center",
             //deviceVidPid: "2b16bcd6",
             // roi: {
@@ -195,7 +195,7 @@ var action = -1;
 //					
             	} else if(action==7){
             		$("#attr").text("");
-            		groupAdd(base64, "group1");
+            		groupAdd(base64, "test");
 //            		$("groupName")
             	}
             }

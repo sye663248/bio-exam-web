@@ -14,7 +14,7 @@ function login(canvas){
         console.log("score " + score);
         if(score>79.9){
         	alert("登入成功");
-        	window.location.href("/face1to1/demoTest");
+        	window.location.assign("/face1to1/demoTest");
 //        	window.location.href("/index_1N.html");
         } else {
         	alert("登入失敗");
