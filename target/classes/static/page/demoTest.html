@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+img {
+	width: 100px;
+	height: 100px;
+}
+
+div {
+	float: left;
+}
+canvas {
+	float: left;
+	width: 450px;
+	height: 450px;
+}
+
+button {
+    background-color: #555555; 
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 10%;
+}
+.file {
+    position: relative;
+    display: inline-block;
+    background: #555555;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: white;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: #555555;
+    border-color: #78C3F3;
+    color: grey;
+    text-decoration: none;
+}
+
+</style>
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/json2.js"></script>
+<script src="/js/demoTest.js"></script>
+<script src="/js/test.js"></script>
+
+</head>
+
+
+
+<body onload="load();" style="background-color: #fff">
+
+	<div>
+		<button onclick="init()">初始化</button>
+		<button onclick="start()">開始人臉辨識</button>
+		<button onclick="stop()">停止人臉辨識</button><br>
+		<button onclick="getVersion()">SDK版本</button>
+		<button onclick="getVideoDevices()">取得裝置資訊</button>
+		<br>
+		<h3>1比1 API</h3>
+		<a href="javascript:;" class="file">
+		<input type="file" name="file" id="file" accept="image/*"
+			onChange="getFile()" />選擇圖片</a>
+		<button
+			onclick="javascript:if(action!=0){alert('請先傳照');return;}action=1;start();">1.1
+			verify</button>
+		<br>
+		<button onclick="javascript:action=2;start();">1.2 detect</button>
+		<button onclick="javascript:action=3;start();">1.3 extract</button>
+		<br>
+		<button id="capture" onclick="capture()">capture</button>
+		<button
+			onclick="javascript:if(action!=0){alert('請先拍照');return;}action=4;start();">1.4
+			compare</button>
+		<br>
+		<button onclick="javascript:action=5;start();">1.5
+			extract_with_detect</button>
+		<button onclick="version()">1.6 version</button>
+		<br>
+		<h3>1比N API</h3>
+		<button
+			onclick="javascript:location.href='/index_1N.html'">1比N</button>
+		<h3>應用</h3>
+		<!--<button onclick="javascript:location.href='/groupinit.html'">1:N 1.1 init faceGroup </button><br>
+		<button onclick="javascript:location.href='/groupfree.html'">1:N 1.2 free faceGroup </button><br>-->
+		<button onclick="javascript:action=7;start();">1:1-1.5 get feature to 1:N-1.3 add member </button><br>
+		<!--<button onclick="javascript:location.href='/groupdelete.html'">1:N 1.4 delete member by feature ID</button><br>
+		<button onclick="javascript:location.href='/groupclean.html'">1:N 1.5 delete all member </button><br>-->
+		<button onclick="javascript:action=6;start();">1:1-1.5 get feature to 1:N-1.6 check score (Login) </button><br>
+		<!--<button onclick="javascript:location.href='/groupgetsize.html'">1:N 1.7 get faceGroup size </button><br>
+		<button onclick="javascript:location.href='/groupbatchadd.html'">1:N 1.8 add batch </button><br>
+		<button onclick="javascript:location.href='/grouplist.html'">1:N 1.9 get faceGroup list(set) </button><br>
+		<button onclick="javascript:location.href='/groupversion.html'">1:N 1.10 get version </button><br>-->
+		
+
+	</div>
+	<div style="text-align: center;">
+		<div id="deviceSetting">
+			<select id="devices">
+			</select>
+		</div>
+
+		<!-- for IE -->
+		<object type="application/x-plugintest" id="plugin"
+			classid="clsid:f3c1bb15-7b99-52b4-82eb-be129d67bd5b"
+			style="width: 480px; height: 460px; border: 1px solid #ccc;">
+		</object>
+
+		<!-- for Firefox/chrome 
+		<object type="application/x-plugintest" id="plugin"
+			style="width: 600px; height: 600px; border: 1px solid #ccc;">
+		</object>
+-->
+		
+	</div>
+	<canvas id="canvas1"></canvas>
+	<br>
+	<div id="attr"></div>
+</body>
+</html>
