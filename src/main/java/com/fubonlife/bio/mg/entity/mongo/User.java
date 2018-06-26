@@ -9,11 +9,13 @@ public class User extends BaseEntity {
 	@Id
 	private String userId;
 	
+	private String systemName;
+	
 	private String name;
 	
 	private String password;
 	
-	private String note;
+	private String key;
 
 	public String getUserId() {
 		return userId;
@@ -39,13 +41,22 @@ public class User extends BaseEntity {
 		this.password = password;
 	}
 
-	public String getNote() {
-		return note;
+	public String getKey() {
+		return key;
 	}
 
-	public void setNote(String note) {
-		this.note = note;
+	public void setKey(String key) {
+		this.key = key;
 	}
+
+	public String getSystemName() {
+		return systemName;
+	}
+
+	public void setSystemName(String systemName) {
+		this.systemName = systemName;
+	}
+	
 	
 	
 	
