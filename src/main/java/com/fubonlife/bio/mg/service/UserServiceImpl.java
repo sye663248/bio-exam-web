@@ -23,27 +23,27 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User read() {
+	public User read(String userId) {
 		// TODO Auto-generated method stub
-		return null;
+		return userRepository.findAllByUserId(userId);
 	}
 
 	@Override
-	public User create(User obj) {
-		// TODO Auto-generated method stub
-		return null;
+	public User create(User user) {
+		userRepository.save(user);
+		return user;
 	}
 
 	@Override
-	public User update(User obj) {
-		// TODO Auto-generated method stub
-		return null;
+	public User update(User user) {
+		userRepository.save(user);
+		return user;
 	}
 
 	@Override
-	public User delete(User obj) {
+	public User delete(String systemName) {
 		// TODO Auto-generated method stub
-		return null;
+		return userRepository.deleteBySystemName(systemName).get(0);
 	}
 
 	@Override
@@ -65,8 +65,8 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<User> findByName(String name) {
-		return userRepository.findByName(name);
+	public List<User> findByAccount(String account) {
+		return userRepository.findByAccount(account);
 	}
 
 }

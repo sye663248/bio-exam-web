@@ -12,13 +12,13 @@ public interface UserService {
 
 	public List<User> readAll();
 
-	public User read();
+	public User read(String userId);
 
 	public User create(User obj);
 
 	public User update(User obj);
 
-	public User delete(User obj);
+	public User delete(String systemName);
 
 	public Page<User> findByExample(Example example, Pageable pageable);
 
@@ -26,5 +26,5 @@ public interface UserService {
 
 	public List<User> findAll();
 
-	public List<User> findByName(String name);
+	public List<User> findByAccount(String account);
 }
