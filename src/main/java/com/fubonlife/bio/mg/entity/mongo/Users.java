@@ -1,6 +1,10 @@
 package com.fubonlife.bio.mg.entity.mongo;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="users")
@@ -14,6 +18,16 @@ public class Users /*extends BaseEntity*/ {
 	private String password;
 	
 	private String key;
+	
+//	@DBRef
+//	@Transient
+//	private List<Systems> systems;
+//	public List<Systems> getSystems() {
+//		return systems;
+//	}
+//	public void setSystems(List<Systems> systems) {
+//		this.systems = systems;
+//	}
 
 	public String getUserId() {
 		return userId;
@@ -45,6 +59,16 @@ public class Users /*extends BaseEntity*/ {
 
 	public void setKey(String key) {
 		this.key = key;
+	}
+	
+//	list.contains(user)
+	@Override
+	public boolean equals(Object obj) {   
+        if (obj instanceof Users) {   
+            Users u = (Users) obj;   
+            return this.account.equals(u.getAccount());   
+        }   
+        return super.equals(obj);  
 	}
 
 

@@ -17,4 +17,6 @@ public interface FormsService {
 	public Page<Forms> findByExample(Example example, Pageable pageable);
 	public Page<Forms> findAll(Pageable pageable);
 	public List<Forms> findAll();
+	public List<Forms> readFormBySystemId(String systemId);
+	public Forms findTopByOrderByFormIdDesc();
 }

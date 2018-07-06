@@ -30,14 +30,14 @@ public class MemberController extends BaseController{
 	@Autowired
 	private MemberService memberService;
 	
-	@RequestMapping(value = "/read2", method = RequestMethod.GET)
-    public WebRestResponse read2(HttpServletRequest request, String name) throws UnsupportedEncodingException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
-
-		log.info("name: "+name);
-
-        List<Member> datas = memberService.findByName(name);
-        return WebRestResponse.success(datas, datas.size());
-    }
+//	@RequestMapping(value = "/read2", method = RequestMethod.GET)
+//    public WebRestResponse read2(HttpServletRequest request, String name) throws UnsupportedEncodingException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
+//
+//		log.info("name: "+name);
+//
+//        List<Member> datas = memberService.findByName(name);
+//        return WebRestResponse.success(datas, datas.size());
+//    }
 	
 	@RequestMapping(value = "/create1", method = RequestMethod.GET)
     public WebRestResponse create1(HttpServletRequest request) throws UnsupportedEncodingException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
@@ -47,30 +47,30 @@ public class MemberController extends BaseController{
         return WebRestResponse.success(o);
     }
 	
-	@RequestMapping(value = "/read1", method = RequestMethod.GET)
-    public WebRestResponse read1(HttpServletRequest request) throws UnsupportedEncodingException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
-
-
-        List<Member> datas = memberService.findAll();
-        return WebRestResponse.success(datas, datas.size());
-    }
+//	@RequestMapping(value = "/read1", method = RequestMethod.GET)
+//    public WebRestResponse read1(HttpServletRequest request) throws UnsupportedEncodingException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
+//
+//
+//        List<Member> datas = memberService.findAll();
+//        return WebRestResponse.success(datas, datas.size());
+//    }
 	
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
     public WebRestResponse read(HttpServletRequest request) throws UnsupportedEncodingException, InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException {
-
-
+		System.out.println("request" + request);
+		System.out.println("limit" + request.getParameter("limit"));
+		System.out.println("page" + request.getParameter("page"));
+		System.out.println("criteria" + request.getParameter("criteria"));
         if (request.getParameter("criteria") != null) {
-        		SmartExtCommand command = new SmartExtCommand(request);
+        	SmartExtCommand command = new SmartExtCommand(request);
             Example<?> example = command.getExample(Member.class);
-
             Pageable pageable = getPageable(request);
-            Page<Member> pages = memberService.findByExample(example, pageable);
-
+            Page<?> pages = memberService.findByExample(example, pageable);
             return WebRestResponse.success(pages.getContent(), pages.getTotalElements());
         }
 
         Pageable pageable = getPageable(request);
-        Page<Member> pages = memberService.findAll(pageable);
+        Page<?> pages = memberService.findAll(pageable);
         return WebRestResponse.success(pages.getContent(), pages.getTotalElements());
     }
 	

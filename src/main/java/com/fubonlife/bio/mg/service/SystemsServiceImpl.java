@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fubonlife.bio.mg.entity.mongo.Systems;
+import com.fubonlife.bio.mg.entity.mongo.Users;
 import com.fubonlife.bio.mg.repository.mongo.SystemsRepository;
 
 @Service
@@ -47,23 +48,30 @@ public class SystemsServiceImpl implements SystemsService{
 	public List<Systems> readSystemByUserId(String userId) {
 		return systemsRepository.findByUserId(userId);
 	}
+	
+	public List<Systems> readSystemByUser(Users user) {
+		return systemsRepository.findByUser(user);
+	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Page<Systems> findByExample(Example example, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		return systemsRepository.findAll(example, pageable);
 	}
 
 	@Override
 	public Page<Systems> findAll(Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		return systemsRepository.findAll(pageable);
 	}
 
 	@Override
 	public List<Systems> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return systemsRepository.findAll();
+	}
+
+	@Override
+	public Systems findTopByOrderBySystemIdDesc() {
+		return systemsRepository.findTopByOrderBySystemIdDesc();
 	}
 
 	

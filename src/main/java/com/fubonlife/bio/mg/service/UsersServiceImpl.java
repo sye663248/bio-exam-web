@@ -43,22 +43,34 @@ public class UsersServiceImpl implements UsersService{
 		return userId;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Page<Users> findByExample(Example example, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		return usersRepository.findAll(example, pageable);
 	}
 
 	@Override
 	public Page<Users> findAll(Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		return usersRepository.findAll(pageable);
 	}
 
 	@Override
 	public List<Users> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return usersRepository.findAll();
+	}
+
+	@Override
+	public Users readByAccountAndPasssword(String account, String password) {
+		List<Users> users = usersRepository.findByAccountAndPassword(account, password);
+		if (users.size()==0){
+			return null;
+		}
+		return usersRepository.findByAccountAndPassword(account, password).get(0);
+	}
+
+	@Override
+	public Users findTopByOrderByUserIdDesc() {
+		return usersRepository.findTopByOrderByUserIdDesc();
 	}
 
 }

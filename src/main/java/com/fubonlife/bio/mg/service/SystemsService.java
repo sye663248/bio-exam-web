@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.fubonlife.bio.mg.entity.mongo.Systems;
+import com.fubonlife.bio.mg.entity.mongo.Users;
 
 public interface SystemsService {
 	public List<Systems> readAll();
@@ -18,5 +19,6 @@ public interface SystemsService {
 	public Page<Systems> findByExample(Example example, Pageable pageable);
 	public Page<Systems> findAll(Pageable pageable);
 	public List<Systems> findAll();
-
+	public List<Systems> readSystemByUser(Users user);
+	public Systems findTopByOrderBySystemIdDesc();
 }

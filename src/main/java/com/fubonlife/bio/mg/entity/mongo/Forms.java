@@ -1,6 +1,7 @@
 package com.fubonlife.bio.mg.entity.mongo;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="forms")
@@ -9,8 +10,15 @@ public class Forms {
 	@Id
 	private String formId;
 	private String formName;
-	
 	private String systemId;
+	@DBRef
+	private Systems system;
+	public Systems getSystem() {
+		return system;
+	}
+	public void setSystem(Systems system) {
+		this.system = system;
+	}
 	
 	public String getFormId() {
 		return formId;
@@ -24,7 +32,6 @@ public class Forms {
 	public void setFormName(String formName) {
 		this.formName = formName;
 	}
-
 	public String getSystemId() {
 		return systemId;
 	}

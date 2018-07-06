@@ -14,7 +14,9 @@ public interface FieldsService {
 	public Fields create(Fields field);
 	public Fields update(Fields field);
 	public String delete(String fieldId);
+	public List<Fields> readFieldByFormId(String formId);
 	public Page<Fields> findByExample(Example example, Pageable pageable);
 	public Page<Fields> findAll(Pageable pageable);
 	public List<Fields> findAll();
+	public Fields findTopByOrderByFieldIdDesc();
 }

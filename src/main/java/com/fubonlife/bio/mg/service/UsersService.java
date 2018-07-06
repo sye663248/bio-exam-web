@@ -18,4 +18,6 @@ public interface UsersService {
 	public Page<Users> findByExample(Example example, Pageable pageable);
 	public Page<Users> findAll(Pageable pageable);
 	public List<Users> findAll();
+	public Users readByAccountAndPasssword(String account, String password);
+	public Users findTopByOrderByUserIdDesc();
 }

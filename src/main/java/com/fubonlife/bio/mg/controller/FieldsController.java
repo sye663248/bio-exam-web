@@ -1,11 +1,17 @@
 package com.fubonlife.bio.mg.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,63 +19,113 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fubonlife.bio.mg.entity.mongo.Fields;
+import com.fubonlife.bio.mg.entity.mongo.Forms;
+import com.fubonlife.bio.mg.entity.mongo.Systems;
+import com.fubonlife.bio.mg.entity.mongo.Users;
 import com.fubonlife.bio.mg.service.FieldsService;
+import com.fubonlife.bio.mg.service.FormsService;
+import com.fubonlife.bio.mg.util.ExamUtil;
+import com.fubonlife.bio.mg.util.SmartExtCommand;
+import com.fubonlife.bio.mg.util.WebRestResponse;
 
-@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(value="/web/form")
-public class FieldsController {
+@RequestMapping(value="/web/field")
+public class FieldsController extends BaseController{
 
 	@Autowired
 	private FieldsService fieldsService;
+	@Autowired
+	private FormsService formsService;
 	
-	@RequestMapping(value = "/readFieldById", method = RequestMethod.POST)
-	public Fields readFieldById(HttpServletRequest request, @RequestBody String data) throws Exception {
-		ObjectMapper objectMapper = new ObjectMapper();
-		Fields field = objectMapper.readValue(data, Fields.class);
-		return fieldsService.read(field.getFieldId());
-	}
 	
-	@RequestMapping(value = "/readField", method = RequestMethod.GET)
-	public List<Fields> readField() throws Exception {
-		return fieldsService.readAll();
-	}
 	
-	@RequestMapping(value = "/insertField", method = RequestMethod.POST)
-	public Fields insertField(@RequestBody String data) throws Exception {
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public WebRestResponse insertField(@RequestBody String data) throws Exception {
 		System.out.println("insert Field " + data);
 		ObjectMapper objectMapper = new ObjectMapper();
+		Map<String,String> map = objectMapper.readValue(data, Map.class);
 		Fields field = objectMapper.readValue(data, Fields.class);
-		List<Fields> list = fieldsService.readAll();
-		Fields last = list.get(list.size()-1);
-		Integer number = Integer.valueOf(last.getFieldId().replaceAll("field", "")) + 1;
-		String id = "";
-		for(int i = 0; i< 6-number.toString().length();i++){
-			id += 0;
+		String lastId = "";
+		Fields lastField = fieldsService.findTopByOrderByFieldIdDesc();
+		if (lastField != null) {
+			lastId = lastField.getFieldId();
 		}
-		id = id + number;
-		field.setFieldId("field" + id);
+		map = new ExamUtil().setId(lastId, map, "field");
+//		Fields last = fieldsService.findTopByOrderByCreatedDesc();
+		field.setForm(formsService.read(field.getFormId()));
+		field.setFieldId(map.get("fieldId"));
 		fieldsService.create(field);
-		return field;
+		return WebRestResponse.success(field,1);
 	}
 	
-	@RequestMapping(value = "/modifyField", method = RequestMethod.POST)
-	public Fields modifyField(@RequestBody String data) throws Exception {
+	
+	@RequestMapping(value = "/read", method = RequestMethod.GET)
+	public WebRestResponse read1(HttpServletRequest request) throws Exception {
+		List<Fields> fields = fieldsService.readAll();
+		List<Map<String,String>> list = new ArrayList<>();
+		for(Fields field : fields){
+			Users user = field.getForm().getSystem().getUser();
+			Systems system = field.getForm().getSystem();
+			Forms form = field.getForm();
+			Map<String,String> map = new LinkedHashMap<String,String>();
+			map.put("fieldId", field.getFieldId());
+			map.put("fieldLabel", field.getFieldLabel());
+			map.put("systemName", system.getSystemName());
+			map.put("systemId", system.getSystemId());
+			map.put("formName", form.getFormName());
+			map.put("formId", form.getFormId());
+			map.put("account", user.getAccount());
+			map.put("password", user.getPassword());
+			map.put("userId", user.getUserId());
+			list.add(map);
+		}
+//		return WebRestResponse.success(fields, fields.size());
+		return WebRestResponse.success(list, list.size());
+	}
+	
+	@RequestMapping(value = "/read2", method = RequestMethod.GET)
+	public WebRestResponse read(HttpServletRequest request) throws Exception {
+		System.out.println("limit" + request.getParameter("limit"));
+		if (request.getParameter("criteria") != null) {
+    		SmartExtCommand command = new SmartExtCommand(request);
+	        Example<?> example = command.getExample(Fields.class);
+	        Pageable pageable = getPageable(request);
+	        Page<Fields> pages = fieldsService.findByExample(example, pageable);
+	        return WebRestResponse.success(pages.getContent(), pages.getTotalElements());
+		}
+	    Pageable pageable = getPageable(request);
+	    Page<Fields> pages = fieldsService.findAll(pageable);
+	    return WebRestResponse.success(pages.getContent(), pages.getTotalElements());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/update", method = RequestMethod.PUT)
+	public WebRestResponse modifyField(@RequestBody String data) throws Exception {
 		System.out.println("class "+data.getClass());
 		System.out.println("modify Field " + data);
 		ObjectMapper objectMapper = new ObjectMapper();
-		Fields field = objectMapper.readValue(data, Fields.class);
+//		Fields field = objectMapper.readValue(data, Fields.class);
+		HashMap<String,String> map = objectMapper.readValue(data, HashMap.class);
+		Fields field = fieldsService.read(map.get("fieldId"));
+		field.setFieldLabel(map.get("fieldLabel"));
+		field.setFieldType(map.get("fieldType"));
+		List<Object> list = objectMapper.readValue(map.get("fieldItems"), List.class);
+		System.out.println(list);
+		field.setFieldItems(list);
 		fieldsService.update(field);
-		return field;
+		return WebRestResponse.success(field,1);
 	}
 	
-	@RequestMapping(value = "/deleteField", method = RequestMethod.POST)
-	public Fields deleteField(@RequestBody String data) throws Exception {
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	public WebRestResponse deleteField(@RequestBody String data) throws Exception {
 		System.out.println("class "+data.getClass());
 		System.out.println("delete Field " + data);
 		ObjectMapper objectMapper = new ObjectMapper();
 		Fields field = objectMapper.readValue(data, Fields.class);
 		fieldsService.delete(field.getFieldId());
-		return field;
+		return WebRestResponse.success(field,1);
 	}
+	
+
 }

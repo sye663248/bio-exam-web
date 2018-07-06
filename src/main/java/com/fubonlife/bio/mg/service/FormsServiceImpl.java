@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fubonlife.bio.mg.entity.mongo.Forms;
+import com.fubonlife.bio.mg.entity.mongo.Systems;
 import com.fubonlife.bio.mg.repository.mongo.FormsRepository;
 
 @Service
@@ -42,24 +43,34 @@ public class FormsServiceImpl implements FormsService{
 		formsRepository.deleteById(formId);
 		return formId;
 	}
+	
+	@Override
+	public List<Forms> readFormBySystemId(String systemId) {
+		return formsRepository.findBySystemId(systemId);
+	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Page<Forms> findByExample(Example example, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		return formsRepository.findAll(example, pageable);
 	}
 
 	@Override
 	public Page<Forms> findAll(Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		return formsRepository.findAll(pageable);
 	}
 
 	@Override
 	public List<Forms> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return formsRepository.findAll();
 	}
+
+	@Override
+	public Forms findTopByOrderByFormIdDesc() {
+		return formsRepository.findTopByOrderByFormIdDesc();
+	}
+
+	
 	
 	
 

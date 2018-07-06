@@ -2,11 +2,16 @@ package com.fubonlife.bio.mg.controller;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import java.util.Map;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,89 +20,137 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fubonlife.bio.mg.entity.mongo.Form;
+import com.fubonlife.bio.mg.entity.mongo.Fields;
+import com.fubonlife.bio.mg.entity.mongo.Forms;
+import com.fubonlife.bio.mg.entity.mongo.Systems;
 import com.fubonlife.bio.mg.entity.mongo.Users;
-import com.fubonlife.bio.mg.service.FormService;
+import com.fubonlife.bio.mg.service.FieldsService;
 import com.fubonlife.bio.mg.service.FormsService;
 import com.fubonlife.bio.mg.service.SystemsService;
 import com.fubonlife.bio.mg.service.UsersService;
 import com.fubonlife.bio.mg.util.WebRestResponse;
+import com.fubonlife.bio.mg.util.ExamUtil;
+import com.fubonlife.bio.mg.util.SmartExtCommand;
 
-@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(value="/web/form")
-public class UsersController {
+@RequestMapping(value="/web/user")
+public class UsersController extends BaseController{
 	
 
 	@Autowired
 	private UsersService usersService;
+	@Autowired
+	private SystemsService systemsService;
+	@Autowired
+	private FormsService formsService; 
+	@Autowired
+	private FieldsService fieldsService;
+
 	
-	
-	@RequestMapping(value = "/readUserById", method = RequestMethod.POST)
-	public Users readUserById(HttpServletRequest request, @RequestBody String data) throws Exception {
-		ObjectMapper objectMapper = new ObjectMapper();
-		Users user = objectMapper.readValue(data, Users.class);
-		return usersService.read(user.getUserId());
-	}
-	
-	@RequestMapping(value = "/readUser", method = RequestMethod.GET)
-	public List<Users> readUser() throws Exception {
-		return usersService.readAll();
-	}
-	
-//	@SuppressWarnings("deprecation")
-	@RequestMapping(value = "/insertUser", method = RequestMethod.POST)
-	public Users insertUser(@RequestBody String data) throws Exception {
-//		System.out.println("class "+data.getClass());
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public WebRestResponse insertUser(@RequestBody String data) throws Exception {
 		System.out.println("insert User " + data);
-//		System.out.println("decode " + URLDecoder.decode(data));
-//		System.out.println("encode " + URLEncoder.encode(data));
 		ObjectMapper objectMapper = new ObjectMapper();
 		Users user = objectMapper.readValue(data, Users.class);
-		////////////
+		Map<String,String> map = objectMapper.readValue(data, Map.class);
 		List<Users> list = usersService.readAll();
-		Users last = list.get(list.size()-1);
-		Integer number = Integer.valueOf(last.getUserId().replaceAll("user", "")) + 1;
-//		System.out.println("size " + number.toString().length());
-		String id = "";
-		for(int i = 0; i< 6-number.toString().length();i++){
-			id += 0;
+		if(list.contains(user)){
+			return WebRestResponse.failure("the same account");
 		}
-		id = id + number;
-		user.setUserId("user" + id);
-		user.setKey("key" + id);
+		String lastId = "";
+		Users lastUser = usersService.findTopByOrderByUserIdDesc();
+		if (lastUser != null) {
+			lastId = lastUser.getUserId();
+		}
+//		if (list.size()!=0){
+//			lastId = list.get(list.size()-1).getUserId();
+//		}
+		System.out.println("map " + map);
+		map = new ExamUtil().setId(lastId, map, "user");
+		System.out.println("map2 " + map);
+		user.setUserId(map.get("userId"));
+		user.setKey(map.get("keyId"));
 		usersService.create(user);
-		return user;
+		return WebRestResponse.success(user);
 	}
 	
-	@RequestMapping(value = "/modifyUser", method = RequestMethod.POST)
-	public Users modifyUser(@RequestBody String data) throws Exception {
+	@RequestMapping(value = "/read1", method = RequestMethod.GET)
+	public WebRestResponse read1(HttpServletRequest request) throws Exception {
+		List<Users> list = usersService.readAll();
+		Users lastUser = usersService.findTopByOrderByUserIdDesc();
+		System.out.println("lastuser " + lastUser.getUserId());
+		return WebRestResponse.success(list, list.size());
+	}
+	
+	
+	@RequestMapping(value = "/read", method = RequestMethod.GET)
+	public WebRestResponse read(HttpServletRequest request) throws Exception {
+		System.out.println("criteria" + request.getParameter("criteria"));
+		if (request.getParameter("criteria") != null) {
+    		SmartExtCommand command = new SmartExtCommand(request);
+	        Example<?> example = command.getExample(Users.class);
+	        Pageable pageable = getPageable(request);
+	        Page<Users> pages = usersService.findByExample(example, pageable);
+	        return WebRestResponse.success(pages.getContent(), pages.getTotalElements());
+		}
+
+	    Pageable pageable = getPageable(request);
+	    Page<Users> pages = usersService.findAll(pageable);
+	    return WebRestResponse.success(pages.getContent(), pages.getTotalElements());
+	}
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/update", method = RequestMethod.PUT)
+	public WebRestResponse modifyUser(@RequestBody String data) throws Exception {
 		System.out.println("class "+data.getClass());
 		System.out.println("modify User " + data);
 		ObjectMapper objectMapper = new ObjectMapper();
-		Users user = objectMapper.readValue(data, Users.class);
-		user.setKey(usersService.read(user.getUserId()).getKey());
+		HashMap<String,String> map = objectMapper.readValue(data, HashMap.class);
+//		Users user = objectMapper.readValue(data, Users.class);
+		Users user = usersService.read(map.get("userId"));
+		user.setAccount(map.get("account"));
+		user.setPassword(map.get("password"));
 		usersService.update(user);
-		return user;
+		return WebRestResponse.success(user);
 	}
 	
-	@RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
-	public Users deleteUser(@RequestBody String data) throws Exception {
-		System.out.println("class "+data.getClass());
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	public WebRestResponse deleteUser(@RequestBody String data) throws Exception {
 		System.out.println("delete User " + data);
 		ObjectMapper objectMapper = new ObjectMapper();
 		Users user = objectMapper.readValue(data, Users.class);
-		usersService.delete(user.getUserId());
+		String userId = user.getUserId();
+		usersService.delete(userId);
+		List<Systems> systems = systemsService.readSystemByUserId(userId);
+		for( Systems system : systems ){
+			String systemId = system.getSystemId();
+			systemsService.delete(systemId);
+			List<Forms> forms = formsService.readFormBySystemId(systemId);
+			for ( Forms form : forms ){
+				String formId = form.getFormId();
+				formsService.delete(formId);
+				//field
+				List<Fields> fields = fieldsService.readFieldByFormId(formId);
+				for(Fields field : fields){
+					fieldsService.delete(field.getFieldId());
+				}
+				
+			}
+		}
+		return WebRestResponse.success(user);
+	}
+	
+//	login
+	@RequestMapping(value = "/readUserByAccountAndPassword", method = RequestMethod.POST)
+	public Users readUserByAccountAndPasssword(HttpServletRequest request, @RequestBody String data) throws Exception {
+		ObjectMapper objectMapper = new ObjectMapper();
+		Users user = objectMapper.readValue(data, Users.class);
+		user = usersService.readByAccountAndPasssword(user.getAccount(), user.getPassword());
+		System.out.println("user " + user.getUserId());
 		return user;
 	}
 	
-	@RequestMapping(value="/test", method = RequestMethod.POST)
-	@ResponseBody
-	public String test(String data) {
-		System.out.println("ext test");
-		System.out.println(data);
-		ObjectMapper mapper = new ObjectMapper();
-		return data;
-	}
+
 
 }
